@@ -9,21 +9,43 @@ Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://j
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
 ```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
 
-- Bulleted
-- List
+package postTest;
 
-1. Numbered
-2. List
+import java.io.IOException;
+import java.util.List;
 
-**Bold** and _Italic_ and `Code` text
+public class postTest {
 
-[Link](url) and ![Image](src)
+	/*
+	 * 주요 로직: COMPLETEYN이 N이면 운송장 에러인지 확인하고, API 갱신하는 과정 거쳐서 출력해주고, Y면 출력화면으로 바로 뿌려준다.
+	 * MVC모델의 특징을 이용해서 중복되는 기능없이 골고루 돌아가도록 작동시키는 것이 중요함.
+	 */
+	public static void main(String[] args) throws IOException {
+		System.out.println("postTest: 작동시작 ");
+		/* 서비스 호출 문제 없음 */
+		postTrackingService trackingService = new postTrackingService();
+		List<postTrackingVO> trackingList = trackingService.getPostInfo();
+		postResponseInfo  responseInfo= new postResponseInfo();
+		for (postTrackingVO postTracking : trackingList) {
+			try {
+				if (postTracking.getDLV_COMPLETEYN().equals("N")) {
+				responseInfo.getResponse(postTracking.getDLV_CUST(), postTracking.getDLV_TRACKING_NO(),postTracking.getDLV_SEQ());
+				}
+				else {
+					//시퀀스로 디테일에 해당되는 값 전부가져와서 뿌려주자...(HTML 동적 태그 이용..추후 예정)
+					//조회화면으로 가죠..(서비스에)
+				}
+			} catch (Exception e) {
+				System.out.println("postTest: 작동실패...");
+			}
+		}
+
+	}
+
+}
+
 ```
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
